@@ -2,9 +2,24 @@
 
 #define START "\033["
 #define ESCAPE "\033[0m"
-#define BLUE 34
+#define BOLD 1
+#define Underline 4
+#define BLACK 30
 #define RED 31
-#define Magneta 35
+#define GREEN 32
+#define YELLOW 33
+#define BLUE 34
+#define MAGENTA 35
+#define CYAN 36
+#define WHITE 37
+#define BRIGHT_BLACK 90
+#define BRIGHT_RED 91
+#define BRIGHT_GREEN 92
+#define BRIGHT_YELLOW 93
+#define BRIGHT_BLUE 94
+#define BRIGHT_MAGENTA 95
+#define BRIGHT_CYAN 96
+#define BRIGHT_WHITE 97
 
 
 class ColourString
@@ -12,13 +27,14 @@ class ColourString
     
   
     public:
-    std::string value;
-    int color{0};
+    std::string String_Value; // String_Value is the string without the escape codes for easy access to its conetents
+    int color{0},style{0};
 
-    ColourString(std::string string, int colour)
+    ColourString(std::string string, int colour,int Style)
     {
        color = colour;
-       value = START + std::to_string(color) + "m" + string + ESCAPE;
+       style = Style;
+       String_Value = string;
     }
 
     void ChangeColor(int NewColor)
@@ -26,7 +42,18 @@ class ColourString
         color = NewColor;
     }
 
+    std::string value()
+    {
+        return START + std::to_string(style) + ";" + std::to_string(color) + "m" + String_Value + ESCAPE;
+    }
+
 };
+
+std::ostream& operator<<(std::ostream& os, ColourString& str)
+{
+    os << str.value();
+    return os;
+}
 
 bool IsColor(ColourString String, int color)
 {
@@ -42,3 +69,16 @@ bool IsColor(ColourString String, int color)
    
 }
 
+bool HasStyle(ColourString String, int style)
+{
+   if (style == String.style)
+   {
+     return true;
+   }
+
+   else
+   {
+    return false;
+   }
+   
+}
