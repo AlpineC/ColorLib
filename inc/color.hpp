@@ -4,6 +4,7 @@
 #define ESCAPE "\033[0m"
 #define BOLD 1
 #define Underline 4
+#define Italic 3
 #define BLACK 30
 #define RED 31
 #define GREEN 32
