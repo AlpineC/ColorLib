@@ -22,7 +22,7 @@
 #define BRIGHT_CYAN 96
 #define BRIGHT_WHITE 97
 
-
+//A string with customizable colors and styles
 class ColourString
 {
     
@@ -37,6 +37,28 @@ class ColourString
        style = Style;
        String_Value = string;
     }
+    
+    ColourString(int Number, int colour,int Style)
+    {
+       color = colour;
+       style = Style;
+       String_Value = std::to_string(Number);
+    }
+
+    ColourString(float Number, int colour,int Style)
+    {
+       color = colour;
+       style = Style;
+       String_Value = std::to_string(Number);
+    }
+
+    ColourString(double Number, int colour,int Style)
+    {
+       color = colour;
+       style = Style;
+       String_Value = std::to_string(Number);
+    }
+    
 
     void ChangeColor(int NewColor)
     {
@@ -55,6 +77,14 @@ std::ostream& operator<<(std::ostream& os, ColourString& str)
     os << str.value();
     return os;
 }
+
+template <typename T>
+ColourString operator+(ColourString& str, T& other)
+{
+    ColourString newString(str.String_Value + other, str.color, str.style);
+    return newString;
+}
+
 
 bool IsColor(ColourString String, int color)
 {
@@ -83,3 +113,39 @@ bool HasStyle(ColourString String, int style)
    }
    
 }
+
+//Changes the color of a given data type
+ColourString ChangeAppearance(int color,int style,std::string string)
+{
+    ColourString newString(string, color, style);
+    return newString;
+}
+
+ColourString ChangeAppearance(int color,int style,int Number)
+{
+    ColourString newString(Number, color, style);
+    return newString;
+}
+ColourString ChangeAppearance(int color,int style,float Number)
+{
+    ColourString newString(Number, color, style);
+    return newString;
+}
+ColourString ChangeAppearance(int color,int style,double Number)
+{
+    ColourString newString(Number, color, style);
+    return newString;
+}
+ColourString ChangeAppearance(int color,int style,char* string)
+{
+    ColourString newString(string, color, style);
+    return newString;
+}
+ColourString ChangeAppearance(int color,int style,char string)
+{
+    ColourString newString(string, color, style);
+    return newString;
+}
+
+  
+
