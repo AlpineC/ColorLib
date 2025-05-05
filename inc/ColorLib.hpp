@@ -3,8 +3,8 @@
 #define START "\033["
 #define ESCAPE "\033[0m"
 #define BOLD 1
-#define Underline 4
-#define Italic 3
+#define UNDERLINE 4
+#define ITALIC 3
 #define BLACK 30
 #define RED 31
 #define GREEN 32
@@ -86,7 +86,7 @@ ColourString operator+(ColourString& str, T& other)
 }
 
 
-bool IsColor(ColourString String, int color)
+bool IsColor(ColourString& String, int color)
 {
    if (color == String.color)
    {
@@ -100,7 +100,7 @@ bool IsColor(ColourString String, int color)
    
 }
 
-bool HasStyle(ColourString String, int style)
+bool HasStyle(ColourString& String, int style)
 {
    if (style == String.style)
    {
