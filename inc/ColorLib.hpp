@@ -28,7 +28,7 @@ class ColourString
     
   
     public:
-    std::string String_Value; // String_Value is the string without the escape codes for easy access to its conetents
+    std::string String_Value; // String_Value is the string without the escape codes for easy access to its contents
     int color{0},style{0};
 
     ColourString(std::string string, int colour,int Style)
@@ -113,39 +113,4 @@ bool HasStyle(ColourString String, int style)
    }
    
 }
-
-//Changes the color of a given data type
-ColourString ChangeAppearance(int color,int style,std::string string)
-{
-    ColourString newString(string, color, style);
-    return newString;
-}
-
-ColourString ChangeAppearance(int color,int style,int Number)
-{
-    ColourString newString(Number, color, style);
-    return newString;
-}
-ColourString ChangeAppearance(int color,int style,float Number)
-{
-    ColourString newString(Number, color, style);
-    return newString;
-}
-ColourString ChangeAppearance(int color,int style,double Number)
-{
-    ColourString newString(Number, color, style);
-    return newString;
-}
-ColourString ChangeAppearance(int color,int style,char* string)
-{
-    ColourString newString(string, color, style);
-    return newString;
-}
-ColourString ChangeAppearance(int color,int style,char string)
-{
-    ColourString newString(string, color, style);
-    return newString;
-}
-
-  
 
