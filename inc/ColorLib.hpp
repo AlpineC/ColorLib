@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 #define START "\033["
 #define ESCAPE "\033[0m"
@@ -22,55 +23,110 @@
 #define BRIGHT_CYAN 96
 #define BRIGHT_WHITE 97
 
-//A string with customizable colors and styles
-class ColourString
+class ColourChar
 {
-    
-  
     public:
-    std::string String_Value; // String_Value is the string without the escape codes for easy access to its contents
+    char Char_Value; // Char_Value is the character without the escape codes for easy access to its contents
     int color{0},style{0};
 
-    ColourString(std::string string, int colour,int Style)
+    ColourChar()
+      {
+         color = 0;
+         style = 0;
+         Char_Value = ' ';
+      }
+
+    ColourChar(char character, int colour,int Style)
     {
        color = colour;
        style = Style;
-       String_Value = string;
-    }
-    
-    ColourString(int Number, int colour,int Style)
-    {
-       color = colour;
-       style = Style;
-       String_Value = std::to_string(Number);
+       Char_Value = character;
     }
 
-    ColourString(float Number, int colour,int Style)
-    {
-       color = colour;
-       style = Style;
-       String_Value = std::to_string(Number);
-    }
+      ColourChar(int Number, int colour,int Style)
+      {
+         color = colour;
+         style = Style;
 
-    ColourString(double Number, int colour,int Style)
-    {
-       color = colour;
-       style = Style;
-       String_Value = std::to_string(Number);
-    }
-    
+         if (Number >= 10)
+         {
+           throw std::invalid_argument("Number must be a single digit");
+         }
+
+         else
+         {
+               Char_Value = '0' + Number;
+         }
+         
+         
+      }
+      
 
     void ChangeColor(int NewColor)
     {
         color = NewColor;
     }
+    
 
     std::string value()
     {
-        return START + std::to_string(style) + ";" + std::to_string(color) + "m" + String_Value + ESCAPE;
+        return START + std::to_string(style) + ";" + std::to_string(color) + "m" + Char_Value + ESCAPE;
     }
 
+    
 };
+
+
+//A string with customizable colors and styles
+class ColourString
+{
+    
+    public:
+    std::vector<ColourChar> String;
+
+      ColourString(std::string str, int colour=0,int Style=0)
+      {
+         for (char i : str)
+         {
+               ColourChar newChar(i,colour,Style);
+               String.push_back(newChar);
+         }
+      }
+
+      ColourString(int Number, int colour=0,int Style=0)
+      {
+         for (char i : std::to_string(Number))
+         {
+               ColourChar newChar(i,colour,Style);
+               String.push_back(newChar);
+         }
+      }
+
+
+      std::string value() //Returns the string value of the ColourString
+      {
+         std::string str;
+         for (int i = 0; i < String.size();i++)
+         {
+            str += String.at(i).value();
+         }
+
+         return str;
+      }
+
+      std::size_t size() //Returns the size of the ColourString
+      {
+         return String.size();
+      }
+
+      ColourChar at(std::size_t index) const
+      {
+         return String.at(index);
+      }
+
+};
+
+
 
 std::ostream& operator<<(std::ostream& os, ColourString& str)
 {
@@ -78,39 +134,68 @@ std::ostream& operator<<(std::ostream& os, ColourString& str)
     return os;
 }
 
-template <typename T>
-ColourString operator+(ColourString& str, T& other)
+bool operator==(const ColourChar& c1, const ColourChar& c2)
 {
-    ColourString newString(str.String_Value + other, str.color, str.style);
-    return newString;
+    return c1.Char_Value == c2.Char_Value && c1.color == c2.color && c1.style == c2.style;
 }
 
 
-bool IsColor(ColourString& String, int color)
-{
-   if (color == String.color)
-   {
-     return true;
-   }
 
-   else
-   {
-    return false;
-   }
-   
+bool operator==(ColourString& str, ColourString& other)
+{
+    bool result = false;
+    for (std::size_t i = 0; i < str.size(); i++)
+    {
+         if (str.at(i) == other.at(i))
+         {
+               result = true;
+         }
+         
+         else
+         {
+               result = false;
+               break;
+         }
+    }
+
+      return result;
+    
 }
 
-bool HasStyle(ColourString& String, int style)
-{
-   if (style == String.style)
-   {
-     return true;
-   }
 
-   else
-   {
-    return false;
-   }
-   
+
+bool operator!=(ColourString& str, ColourString& other)
+{
+    bool result = false;
+    for (std::size_t i = 0; i < str.size(); i++)
+    {
+         if (str.String.at(i).Char_Value != other.String.at(i).Char_Value)
+         {
+               result = true;
+               break;
+         }
+         else
+         {
+               result = false;
+         }
+    }
+
+      return result;
+    
 }
+
+bool IsColor(ColourChar c1, ColourChar c2)
+{
+    if (c1.Char_Value == c2.Char_Value)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+
+
 
