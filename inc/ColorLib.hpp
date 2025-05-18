@@ -50,7 +50,7 @@ class ColourChar
 
          if (Number >= 10)
          {
-           throw std::invalid_argument("Number must be a single digit");
+           throw std::invalid_argument("Numberic values of type ColorChar must be a single digit");
          }
 
          else
