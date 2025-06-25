@@ -1,5 +1,7 @@
+#pragma once
 #include <iostream>
 #include <vector>
+#include <format>
 
 #define START "\033["
 #define ESCAPE "\033[0m"
@@ -23,11 +25,22 @@
 #define BRIGHT_CYAN 96
 #define BRIGHT_WHITE 97
 
+
+
+
+namespace colorlib
+{
+
 class ColourChar
 {
+   private:  
+    char Char_Value;
+    
+   
     public:
-    char Char_Value; // Char_Value is the character without the escape codes for easy access to its contents
+    
     int color{0},style{0};
+    
 
     ColourChar()
       {
@@ -41,6 +54,8 @@ class ColourChar
        color = colour;
        style = Style;
        Char_Value = character;
+      
+       
     }
 
       ColourChar(int Number, int colour,int Style)
@@ -60,21 +75,27 @@ class ColourChar
          
          
       }
-      
 
-    void ChangeColor(int NewColor)
+    void ChangeColor(int NewColor) //Changes the color of the character
     {
         color = NewColor;
     }
-    
 
-    std::string value()
+
+    const std::string value() const
     {
         return START + std::to_string(style) + ";" + std::to_string(color) + "m" + Char_Value + ESCAPE;
     }
 
+    const char& CharValue() const
+    {
+        return Char_Value;
+    }
+
     
 };
+
+
 
 
 //A string with customizable colors and styles
@@ -106,9 +127,9 @@ class ColourString
       std::string value() //Returns the string value of the ColourString
       {
          std::string str;
-         for (int i = 0; i < String.size();i++)
+         for (ColourChar& iterator : String)
          {
-            str += String.at(i).value();
+            str += iterator.value();
          }
 
          return str;
@@ -119,9 +140,29 @@ class ColourString
          return String.size();
       }
 
-      ColourChar at(std::size_t index) const
+      ColourChar& at(std::size_t index)
       {
          return String.at(index);
+      }
+
+      void ChangeColor(int index, int NewColor) //Changes the color of a specific character
+      {
+          if (index >= 0 && index < String.size())
+          {
+              String.at(index).color = NewColor;
+          }
+          else
+          {
+              throw std::out_of_range("Attempted to access an index out of range in ColourString::ChangeColor");
+          }
+      }
+
+      void ChangeAllColors(int NewColor) //Changes the color of  all characters
+      {
+          for(ColourChar& iterator : String)
+          {
+                  iterator.ChangeColor(NewColor);
+          }
       }
 
 };
@@ -136,7 +177,7 @@ std::ostream& operator<<(std::ostream& os, ColourString& str)
 
 bool operator==(const ColourChar& c1, const ColourChar& c2)
 {
-    return c1.Char_Value == c2.Char_Value && c1.color == c2.color && c1.style == c2.style;
+    return c1.CharValue() == c2.CharValue() && c1.color == c2.color && c1.style == c2.style;
 }
 
 
@@ -169,7 +210,7 @@ bool operator!=(ColourString& str, ColourString& other)
     bool result = false;
     for (std::size_t i = 0; i < str.size(); i++)
     {
-         if (str.String.at(i).Char_Value != other.String.at(i).Char_Value)
+         if (str.String.at(i).value() != other.String.at(i).value())
          {
                result = true;
                break;
@@ -186,7 +227,7 @@ bool operator!=(ColourString& str, ColourString& other)
 
 bool IsColor(ColourChar c1, ColourChar c2)
 {
-    if (c1.Char_Value == c2.Char_Value)
+    if (c1.CharValue() == c2.CharValue())
     {
         return true;
     }
@@ -198,4 +239,40 @@ bool IsColor(ColourChar c1, ColourChar c2)
 
 
 
+}
 
+
+template<>
+struct std::formatter<colorlib::ColourString>
+{ 
+  template <class ParseContext>
+  constexpr ParseContext::iterator parse(ParseContext& ctxt)
+  {
+    return ctxt.begin();
+  }
+
+  template <class FormatContext>
+ FormatContext::iterator format(colorlib::ColourString& str,FormatContext& ctxt ) const
+  {
+    return std::format_to(ctxt.out(),"{}",str.value());
+  }
+  
+};
+
+
+template<>
+struct std::formatter<colorlib::ColourChar>
+{ 
+  template <class ParseContext>
+  constexpr ParseContext::iterator parse(ParseContext& ctxt)
+  {
+    return ctxt.begin();
+  }
+
+  template <class FormatContext>
+ FormatContext::iterator format(colorlib::ColourChar& c,FormatContext& ctxt ) const
+  {
+    return std::format_to(ctxt.out(),"{}",c.value());
+  }
+  
+};
