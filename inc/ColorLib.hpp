@@ -26,7 +26,10 @@
 #define BRIGHT_WHITE 97
 
 
-
+struct CharProperties
+{
+  int color{0},style{0};
+}
 
 namespace colorlib
 {
@@ -36,9 +39,7 @@ class ColourChar
    private:  
     char Char_Value;
     
-   
     public:
-    
     int color{0},style{0};
     
 
@@ -65,7 +66,7 @@ class ColourChar
 
          if (Number >= 10)
          {
-           throw std::invalid_argument("Numberic values of type ColorChar must be a single digit");
+           throw std::invalid_argument("Numberic values of type ColourChar must be a single digit");
          }
 
          else
@@ -82,12 +83,12 @@ class ColourChar
     }
 
 
-    const std::string value() const
+    std::string value() const
     {
         return START + std::to_string(style) + ";" + std::to_string(color) + "m" + Char_Value + ESCAPE;
     }
 
-    const char& CharValue() const
+    const char CharValue() const
     {
         return Char_Value;
     }
@@ -121,6 +122,17 @@ class ColourString
                ColourChar newChar(i,colour,Style);
                String.push_back(newChar);
          }
+      }
+
+     void push_back(ColourChar c)
+      {
+        String.push_back(c);
+      }
+
+   void push_back(char c,int color=0, int Style=0)
+      {
+        ColourChar CC(c,color,Style);
+        String.push_back(CC);
       }
 
 
@@ -176,7 +188,7 @@ std::ostream& operator<<(std::ostream& os, ColourString& str)
 }
 
 bool operator==(const ColourChar& c1, const ColourChar& c2)
-{
+{  
     return c1.CharValue() == c2.CharValue() && c1.color == c2.color && c1.style == c2.style;
 }
 
@@ -185,6 +197,13 @@ bool operator==(const ColourChar& c1, const ColourChar& c2)
 bool operator==(ColourString& str, ColourString& other)
 {
     bool result = false;
+
+    if (str.size() != other.size())
+    {
+      return false;
+    }
+    
+
     for (std::size_t i = 0; i < str.size(); i++)
     {
          if (str.at(i) == other.at(i))
@@ -208,6 +227,12 @@ bool operator==(ColourString& str, ColourString& other)
 bool operator!=(ColourString& str, ColourString& other)
 {
     bool result = false;
+
+    if (str.size() != other.size())
+    {
+      return true;
+    }
+
     for (std::size_t i = 0; i < str.size(); i++)
     {
          if (str.String.at(i).value() != other.String.at(i).value())
@@ -225,9 +250,19 @@ bool operator!=(ColourString& str, ColourString& other)
     
 }
 
-bool IsColor(ColourChar c1, ColourChar c2)
+ColourString operator+(ColourChar Character1, ColourChar Character2)
 {
-    if (c1.CharValue() == c2.CharValue())
+  ColourString Result("");
+  Result.push_back(Character1);
+  Result.push_back(Character2);
+  
+  return Result;
+
+}
+
+bool IsColor(ColourChar c, int color)
+{
+    if (c.color == color)
     {
         return true;
     }
