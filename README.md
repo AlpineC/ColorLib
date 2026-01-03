@@ -1,6 +1,36 @@
 ## Description
 ColorLib is a C++ library which allows for the easy creation of colored/formated strings using [ANSI escape codes](https://en.wikipedia.org/wiki/ANSI_escape_code)
 
+## Example
+```c++
+#include <iostream>
+#include <print>
+#include "../inc/ColorLib.hpp"
+
+int main()
+{
+    
+   for (size_t i = 0; i < 10; i++)
+   {
+     if (i % 2 == 0)
+     {
+        std::print("{}",colorlib::ColourString(i,RED));
+     }
+
+     else
+     {
+      std::print("{}",colorlib::ColourString(i,BLUE));
+     }
+
+   }
+   
+   
+
+    return 0;
+}
+
+```
+
 ## Project Status
 Colorlib is still in development and must undergo extensive review before a full release
 
@@ -11,4 +41,6 @@ Colorlib is still in development and must undergo extensive review before a full
 ## How to use
 1. Install the latest release from the releases page which contains the ColorLib header file
 
-2. Compile the code you include the library in using at least the C++20 standard option 
+2. Compile the code you include the library header in using at least the C++20 standard option 
+
+Note that colorlib is a single header library 

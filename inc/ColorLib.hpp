@@ -29,7 +29,7 @@
 struct CharProperties
 {
   int color{0},style{0};
-}
+};
 
 namespace colorlib
 {
