@@ -1,7 +1,7 @@
 ## Description
 ColorLib is a C++ library which allows for the easy creation of colored/formated strings using [ANSI escape codes](https://en.wikipedia.org/wiki/ANSI_escape_code)
 
-## Example
+## Example: Counter
 ```c++
 
 #include <iostream>
@@ -43,5 +43,6 @@ Colorlib is still in development and must undergo extensive review before a full
 1. Install the latest release from the releases page which contains the ColorLib header file
 
 2. Compile the code you include the library header in using at least the C++20 standard option 
+
 
 Note that colorlib is a single header library 
