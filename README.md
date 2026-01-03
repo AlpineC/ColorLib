@@ -39,7 +39,8 @@ int main()
 ```
 
 ## Project Status
-Colorlib is still in development and must undergo extensive review before a full release
+Colorlib is still in development and must undergo extensive review before a full release, so feel free to give any constructive feedback
+
 
 
 ## Requirments to use
@@ -52,5 +53,6 @@ Colorlib is still in development and must undergo extensive review before a full
 
 
 Note that colorlib is a single header library 
+
 
 
