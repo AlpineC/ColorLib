@@ -3,9 +3,10 @@ ColorLib is a C++ library which allows for the easy creation of colored/formated
 
 ## Example
 ```c++
+
 #include <iostream>
 #include <print>
-#include "../inc/ColorLib.hpp"
+#include <ColorLib.hpp>
 
 int main()
 {
