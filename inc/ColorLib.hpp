@@ -26,10 +26,7 @@
 #define BRIGHT_WHITE 97
 
 
-struct CharProperties
-{
-  int color{0},style{0};
-};
+
 
 namespace colorlib
 {
