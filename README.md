@@ -13,6 +13,7 @@ ColorLib is a C++ library which allows for the easy creation of colored/formated
 #include <iostream>
 #include <print>
 #include <ColorLib.hpp>
+using namespace colorlib;
 
 int main()
 {
@@ -21,12 +22,12 @@ int main()
    {
      if (i % 2 == 0)
      {
-        std::print("{}",colorlib::ColourString(i,RED));
+        std::print("{}",ColourString(i,RED));
      }
 
      else
      {
-      std::print("{}",colorlib::ColourString(i,BLUE));
+      std::print("{}",ColourString(i,BLUE));
      }
 
    }
@@ -53,6 +54,7 @@ Colorlib is still in development and must undergo extensive review before a full
 
 
 Note that colorlib is a single header library 
+
 
 
 
